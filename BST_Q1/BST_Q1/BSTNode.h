@@ -6,7 +6,8 @@
 
 // This is the file to include for access to the complete binary node
 // template implementation
-
+using namespace std;
+#include <iostream>
 #include "BinNode.h"
 
 // Simple binary tree node implementation
@@ -14,22 +15,29 @@ template <typename Key, typename E>
 class BSTNode : public BinNode<E> {
 private:
 	Key k;                  // The node's key
-	E it;                   // The node's value
+	E* coordinates = new E[2];
 	BSTNode* lc;            // Pointer to left child
 	BSTNode* rc;            // Pointer to right child
 
 public:
 	// Two constructors -- with and without initial values
 	BSTNode() { lc = rc = NULL; }
-	BSTNode(Key K, E e, BSTNode* l = NULL, BSTNode* r = NULL)
+	BSTNode(Key K, E* e, BSTNode* l = NULL, BSTNode* r = NULL)
 	{
-		k = K; it = e; lc = l; rc = r;
+		k = K; lc = l; rc = r;
+		coordinates = e;
 	}
 	~BSTNode() {}             // Destructor
 
 	// Functions to set and return the value and key
-	E& element() { return it; }
-	void setElement(const E& e) { it = e; }
+	E* element() {
+		return coordinates; 
+	}
+
+	void setElement(E* e) { 
+		delete coordinates;
+		coordinates = e;
+	}
 	Key& key() { return k; }
 	void setKey(const Key& K) { k = K; }
 

@@ -1,0 +1,13 @@
+Atlanta 10 240
+Austin 100 200
+Boston 200 300
+CedarRapids 205 400
+Chicago 360 890
+Dallas 300 450
+Detroit 150 360
+LasVegas 580 780
+LosAngeles 600 800
+NewYork 50 270
+Portland 650 830
+Seattle 680 780
+SanFrancisco 600 800

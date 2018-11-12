@@ -123,6 +123,9 @@
     <ClInclude Include="BSTNode.h" />
     <ClInclude Include="dictionary.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Cities.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

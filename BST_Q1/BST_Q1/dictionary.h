@@ -3,6 +3,7 @@
 // "A Practical Introduction to Data Structures and Algorithm Analysis,
 // Third Edition (C++)" by Clifford A. Shaffer.
 // Source code Copyright (C) 2007-2011 by Clifford A. Shaffer.
+using namespace std;
 
 // The Dictionary abstract class.
 template <typename Key, typename E>
@@ -21,23 +22,23 @@ public:
 	// Insert a record
 	// k: The key for the record being inserted.
 	// e: The record being inserted.
-	virtual void insert(const Key& k, const E& e) = 0;
+	virtual void insert(const Key& k, E* e) = 0;
 
 	// Remove and return a record.
 	// k: The key of the record to be removed.
 	// Return: A maching record. If multiple records match
 	// "k", remove an arbitrary one. Return NULL if no record
 	// with key "k" exists.
-	virtual E remove(const Key& k) = 0;
+	virtual E* remove(const Key& k) = 0;
 
 	// Remove and return an arbitrary record from dictionary.
 	// Return: The record removed, or NULL if none exists.
-	virtual E removeAny() = 0;
+	virtual E* removeAny() = 0;
 
 	// Return: A record matching "k" (NULL if none exists).
 	// If multiple records match, return an arbitrary one.
 	// k: The key of the record to find
-	virtual E find(const Key& k) const = 0;
+	virtual E* find(const Key& k) const = 0;
 
 	// Return the number of records in the dictionary.
 	virtual int size() = 0;

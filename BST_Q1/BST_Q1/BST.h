@@ -5,7 +5,9 @@
 // Source code Copyright (C) 2007-2011 by Clifford A. Shaffer.
 
 // This file includes all of the pieces of the BST implementation
-
+using namespace std;
+#include <iostream>
+#include <string>
 // Include the node implementation
 #include "BSTNode.h"
 
@@ -22,11 +24,11 @@ private:
 	// Private "helper" functions
 	void clearhelp(BSTNode<Key, E>*);
 	BSTNode<Key, E>* inserthelp(BSTNode<Key, E>*,
-		const Key&, const E&);
+		const Key&, E*);
 	BSTNode<Key, E>* deletemin(BSTNode<Key, E>*);
 	BSTNode<Key, E>* getmin(BSTNode<Key, E>*);
 	BSTNode<Key, E>* removehelp(BSTNode<Key, E>*, const Key&);
-	E findhelp(BSTNode<Key, E>*, const Key&) const;
+	E* findhelp(BSTNode<Key, E>*, const Key&) const;
 	void printhelp(BSTNode<Key, E>*, int) const;
 
 public:
@@ -41,16 +43,17 @@ public:
 	// Insert a record into the tree.
 	// k Key value of the record.
 	// e The record to insert.
-	void insert(const Key& k, const E& e) {
+	void insert(const Key& k, E* e) {
 		root = inserthelp(root, k, e);
 		nodecount++;
+		
 	}
 
 	// Remove a record from the tree.
 	// k Key value of record to remove.
 	// Return: The record removed, or NULL if there is none.
-	E remove(const Key& k) {
-		E temp = findhelp(root, k);   // First find it
+	E* remove(const Key& k) {
+		E* temp = findhelp(root, k);   // First find it
 		if (temp != NULL) {
 			root = removehelp(root, k);
 			nodecount--;
@@ -59,9 +62,9 @@ public:
 	}
 	// Remove and return the root node from the dictionary.
 	// Return: The record removed, null if tree is empty.
-	E removeAny() {  // Delete min value
+	E* removeAny() {  // Delete min value
 		if (root != NULL) {
-			E temp = root->element();
+			E* temp = root->element();
 			root = removehelp(root, root->key());
 			nodecount--;
 			return temp;
@@ -74,7 +77,7 @@ public:
 	// Return some record matching "k".
 	// Return true if such exists, false otherwise. If
 	// multiple records match "k", return an arbitrary one.
-	E find(const Key& k) const { return findhelp(root, k); }
+	E* find(const Key& k) const { return findhelp(root, k); }
 
 	// Return the number of records in the dictionary.
 	int size() { return nodecount; }
@@ -98,10 +101,10 @@ clearhelp(BSTNode<Key, E>* root) {
 // Insert a node into the BST, returning the updated tree
 template <typename Key, typename E>
 BSTNode<Key, E>* BST<Key, E>::inserthelp(
-	BSTNode<Key, E>* root, const Key& k, const E& it) {
+	BSTNode<Key, E>* root, const Key& k, E* it) {
 	if (root == NULL)  // Empty tree: create node
 		return new BSTNode<Key, E>(k, it, NULL, NULL);
-	if (k < root->key())
+	if (k.compare(root->key()) < 0)
 		root->setLeft(inserthelp(root->left(), k, it));
 	else root->setRight(inserthelp(root->right(), k, it));
 	return root;       // Return tree with node inserted
@@ -132,9 +135,9 @@ template <typename Key, typename E>
 BSTNode<Key, E>* BST<Key, E>::
 removehelp(BSTNode<Key, E>* rt, const Key& k) {
 	if (rt == NULL) return NULL;    // k is not in tree
-	else if (k < rt->key())
+	else if (k.compare(rt->key()) < 0)
 		rt->setLeft(removehelp(rt->left(), k));
-	else if (k > rt->key())
+	else if (k.compare(rt->key()) > 0)
 		rt->setRight(removehelp(rt->right(), k));
 	else {                            // Found: remove it
 		BSTNode<Key, E>* temp = rt;
@@ -159,7 +162,7 @@ removehelp(BSTNode<Key, E>* rt, const Key& k) {
 
 // Find a node with the given key value
 template <typename Key, typename E>
-E BST<Key, E>::findhelp(BSTNode<Key, E>* root,
+E* BST<Key, E>::findhelp(BSTNode<Key, E>* root,
 	const Key& k) const {
 	if (root == NULL) return NULL;          // Empty tree
 	if (k < root->key())
