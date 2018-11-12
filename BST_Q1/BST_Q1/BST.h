@@ -8,6 +8,7 @@
 using namespace std;
 #include <iostream>
 #include <string>
+#include <cmath>
 // Include the node implementation
 #include "BSTNode.h"
 
@@ -30,6 +31,8 @@ private:
 	BSTNode<Key, E>* removehelp(BSTNode<Key, E>*, const Key&);
 	E* findhelp(BSTNode<Key, E>*, const Key&) const;
 	void printhelp(BSTNode<Key, E>*, int) const;
+	void printCloseHelp(BSTNode<Key, E>*, E*, double);
+	void checkDistance(BSTNode<Key, E>*, E*, double);
 
 public:
 	BST() { root = NULL; nodecount = 0; }  // Constructor
@@ -85,6 +88,10 @@ public:
 	void print() const { // Print the contents of the BST
 		if (root == NULL) cout << "The BST is empty.\n";
 		else printhelp(root, 0);
+	}
+
+	void printClose(E* coordinates, double distance) {
+		printCloseHelp(root, coordinates, distance);
 	}
 };
 
@@ -183,4 +190,30 @@ printhelp(BSTNode<Key, E>* root, int level) const {
 	cout << root->key() << "\n";        // Print node value
 	printhelp(root->right(), level + 1);  // Do right subtree
 }
+
+//Traverse the tree in preorder, and print out nodes that are within the given distance to the point.
+template<typename Key, typename E>
+void BST<Key, E>::printCloseHelp(BSTNode<Key, E>* root, E* coordinates, double distance)
+{
+	if (root == NULL) return;
+	checkDistance(root, coordinates, distance);
+	//cout << "Traversing..." << endl; //Used for testing only
+	printCloseHelp(root->left(), coordinates, distance);
+	printCloseHelp(root->right(), coordinates, distance);
+}
+
+template<typename Key, typename E>
+inline void BST<Key, E>::checkDistance(BSTNode<Key, E>* root, E* coordinates, double distance)
+{
+	int* nodeCoord = root->element();
+	double distanceBetween = sqrt(pow(coordinates[0] - nodeCoord[0], 2) + pow(coordinates[1] - nodeCoord[1], 2));
+	//cout << distanceBetween << " " << coordinates[0] << " " << coordinates[1] << " " << nodeCoord[0] << " " << nodeCoord[1] << endl; // testing only
+	if (distanceBetween <= distance) {
+		cout << root->key() << " is " << distanceBetween << " units away." << endl;
+	}
+	else {
+		return;
+	}
+}
+
 
